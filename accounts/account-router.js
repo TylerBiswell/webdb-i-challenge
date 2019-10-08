@@ -63,10 +63,18 @@ router.put('/:id', validateAccount, (req, res) => {
     });
 });
 
-// DELETE /api/accounts/:id endpoint to Delete an account -
+// DELETE /api/accounts/:id endpoint to Delete an account - FUNCTIONAL
 router.delete('/:id', (req, res) => {
   db('accounts')
-    .then()
+    .where({ id: req.params.id })
+    .del()
+    .then(count => {
+      if (count) {
+        res.status(200).json({ message: 'The account has been deleted' });
+      } else {
+        res.status(404).json({ message: 'Invalid account ID' });
+      }
+    })
     .catch(err => {
       console.log(err);
       res.status(500).json({ message: 'Error deleting the account' });
