@@ -11,7 +11,19 @@ const router = express.Router();
 
 // GET /api/accounts endpoint to Retrieve accounts - FUNCTIONAL
 router.get('/', (req, res) => {
+  const sortby =
+    req.query.sortby === 'name'
+      ? 'name'
+      : req.query.sortby === 'budget'
+      ? 'budget'
+      : 'id';
+  const sortdir = req.query.sortdir === 'desc' ? 'desc' : 'asc';
+
+  // console.log('sortby:', sortby);
+
   db('accounts')
+    .limit(req.query.limit)
+    .orderBy(sortby, sortdir)
     .then(accounts => {
       res.status(200).json(accounts);
     })
