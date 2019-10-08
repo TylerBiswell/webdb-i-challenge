@@ -21,17 +21,53 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /api/accounts/:id endpoint to Retrieve account by ID -
-router.get('/:id', (req, res) => {});
+// GET /api/accounts/:id endpoint to Retrieve account by ID - FUNCTIONAL
+router.get('/:id', (req, res) => {
+  db('accounts')
+    .where({ id: req.params.id })
+    .first()
+    .then(account => {
+      if (account) {
+        res.status(200).json(account);
+      } else {
+        res.status(404).json({ message: 'Invalid account ID' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Error retrieving the account' });
+    });
+});
 
 // POST /api/accounts/ endpoint to Create account -
-router.post('/', validateAccount, (req, res) => {});
+router.post('/', validateAccount, (req, res) => {
+  db('accounts')
+    .then()
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Error creating the account' });
+    });
+});
 
 // PUT /api/accounts/:id endpoint to Update an account -
-router.put('/:id', validateAccount, (req, res) => {});
+router.put('/:id', validateAccount, (req, res) => {
+  db('accounts')
+    .then()
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Error updating the account' });
+    });
+});
 
 // DELETE /api/accounts/:id endpoint to Delete an account -
-router.delete('/:id', (req, res) => {});
+router.delete('/:id', (req, res) => {
+  db('accounts')
+    .then()
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Error deleting the account' });
+    });
+});
 
 // **********************************************************************
 
