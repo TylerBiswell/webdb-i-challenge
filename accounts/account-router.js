@@ -53,10 +53,18 @@ router.post('/', validateAccount, (req, res) => {
     });
 });
 
-// PUT /api/accounts/:id endpoint to Update an account -
+// PUT /api/accounts/:id endpoint to Update an account - FUNCTIONAL
 router.put('/:id', validateAccount, (req, res) => {
   db('accounts')
-    .then()
+    .where({ id: req.params.id })
+    .update(req.body)
+    .then(count => {
+      if (count) {
+        res.status(200).json({ message: 'The account has been updated' });
+      } else {
+        res.status(404).json({ message: 'Invalid account ID' });
+      }
+    })
     .catch(err => {
       console.log(err);
       res.status(500).json({ message: 'Error updating the account' });
