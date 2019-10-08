@@ -39,10 +39,14 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /api/accounts/ endpoint to Create account -
+// POST /api/accounts/ endpoint to Create account - FUNCTIONAL
 router.post('/', validateAccount, (req, res) => {
   db('accounts')
-    .then()
+    .insert(req.body, 'id')
+    .then(ids => {
+      console.log(ids);
+      res.status(201).json({ newAccount: ids[0] });
+    })
     .catch(err => {
       console.log(err);
       res.status(500).json({ message: 'Error creating the account' });
@@ -73,7 +77,7 @@ router.delete('/:id', (req, res) => {
 
 // Custom Middleware
 
-// Validate body on create/update account request - NEEDS TESTING
+// Validate body on create/update account request - FUNCTIONAL
 function validateAccount(req, res, next) {
   if (!Object.keys(req.body).length) {
     res.status(400).json({ message: 'Missing account data!' });
